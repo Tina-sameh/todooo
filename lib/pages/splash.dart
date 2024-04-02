@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo/pages/Home.dart';
+
+import 'auth/login/login.dart';
 
 class Splash extends StatefulWidget {
   static String routeName="splash";
@@ -14,7 +15,7 @@ class _SplashState extends State<Splash> {
   void initState() {
     super.initState();
     Future.delayed(Duration(seconds: 3), (){
-      Navigator.pushReplacementNamed(context, Home.routeName);
+      Navigator.pushReplacementNamed(context, Login.routeName);
     });
   }
   @override

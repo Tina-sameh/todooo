@@ -1,0 +1,26 @@
+{
+  "login" : "Log in",
+  "register": "Register",
+  "message": "Don't have an account? sign up now",
+"user" : "user name",
+"email" : "Email",
+"password" : "Password",
+"repassword" : "RePassword",
+"createAccount" : "create Account",
+"welcome" : "Welcome back",
+"wrongPass":"Please enter a valid password",
+"emailFormat" :"this format is not allowed",
+"noUser" :"No user found for that email.",
+"falsePass" :"Wrong password provided for that user.",
+"wrong" :"some thing went wrong",
+
+"tryAgain" :"please try again later",
+"exit" :"this account already exists for that email",
+"weak" :"Too weak",
+"match" :"not match",
+"invalidPass" :"Please enter a valid password",
+"emptyEmail" :"Empty email are not allowed",
+"invalidUser" :"please enter a valid username",
+"lang": "Language",
+"dark": "Dark Mode"
+}

@@ -1,11 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_date_timeline/easy_date_timeline.dart';
 import 'package:flutter/material.dart';
-import 'package:todo/widgets/ToDo.dart';
+import 'package:provider/provider.dart';
+import 'package:todo/widgets/todo.dart';
 
-import '../model/todo_dm.dart';
+import '../providers/list_provider.dart';
+import '../providers/themeProvider.dart';
 
 class ListTab extends StatefulWidget {
-
   const ListTab({super.key});
 
   @override
@@ -13,40 +14,94 @@ class ListTab extends StatefulWidget {
 }
 
 class _ListTabState extends State<ListTab> {
-  List<ToDo_dm> todos=[];
+  late ListProvider listProvider;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      listProvider.refreshTodos();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    if(todos.isEmpty){
-    refreshTodos();}
-    return Column(
-      children: [
-Expanded(
-  child: ListView.builder(
-      itemCount:todos.length,
-      itemBuilder:(context , index){
-    return ToDo(todo: todos[index],);
-  }),
-)
-      ],
+    ThemeProvider themeProvider=Provider.of(context);
+    listProvider = Provider.of(context);
+    return Container(
+      child: Column(
+        children: [
+          buildStack(context),
+          Expanded(
+            child: ListView.builder(
+                itemCount: listProvider.todos.length,
+                itemBuilder: (context, index) {
+                  return TodoWidget(
+                    todo: listProvider.todos[index],
+                  );
+                }),
+          )
+        ],
+      ),
     );
   }
 
-  refreshTodos() async {
-    CollectionReference todoCollection =FirebaseFirestore.instance.collection(ToDo_dm.collectionName);
-    QuerySnapshot querySnapShot= await todoCollection.get();
-    List<QueryDocumentSnapshot<Object?>> docList= querySnapShot.docs;
+  Stack buildStack(BuildContext context) {
+    return Stack(
+        children: [
+          Positioned.fill(
+            child : Column(
+              children: [
+                Expanded(child: Container(color: Color(0xff5b9ae8),)),
+                Spacer(),
+              ],
+            ),
+          ),
+          EasyInfiniteDateTimeLine(
+            firstDate: DateTime.now().subtract(Duration(days: 365)),
+            focusDate: listProvider.selectedDate,
+            lastDate: DateTime.now().add(Duration(days: 365)),
+            onDateChange: (selectDate) {
+              listProvider.onDateSelected(selectDate);
+            },
+            activeColor: Colors.white,
+            dayProps:EasyDayProps(
+              height: MediaQuery.of(context).size.height*.12,
+              width:  75
 
-    for(var doc in docList){
-      Map json= doc.data() as Map;
-      Timestamp dateToTimeStamp= json["Date"];
-      ToDo_dm todo= ToDo_dm(title: json["title"],
-          describtion: json["description"],
-          date:dateToTimeStamp.toDate() ,
-          id: json["id"],
-          isDone: json["isDone"]);
-    }
-    setState(() {
-    });
+            ),
+
+            itemBuilder:
+                (context, dayNumber, dayName, monthName, fullDate, isSelected) {
+              return Card(
+                elevation: isSelected? 20: 0,
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8)),
+                  child: Column(
+                    children: [
+                      Spacer(),
+                      Text(
+                        dayName,
+                        style: TextStyle(
+                            color: isSelected ? Colors.blue : Colors.black,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Spacer(),
+                      Text(dayNumber,
+                          style: TextStyle(
+                              color: isSelected ? Colors.blue : Colors.black,
+                              fontWeight: FontWeight.bold)),
+                      Spacer(),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      );
   }
 }
