@@ -6,6 +6,7 @@ import 'package:todo/pages/auth/login/login.dart';
 import 'package:todo/pages/auth/register/register.dart';
 import 'package:todo/pages/splash.dart';
 import 'package:todo/pages/Home.dart';
+import 'package:todo/pages/update_task.dart';
 import 'package:todo/providers/langProvider.dart';
 import 'package:todo/providers/list_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -60,8 +61,9 @@ class MyApp extends StatelessWidget {
         Home.routeName: (_) => const Home(),
         Login.routeName: (_) =>  Login(),
         Register.routeName: (_) =>  Register(),
+        TaskEdit.routeName: (_) =>  TaskEdit(),
       },
-      initialRoute: Login.routeName,
+      initialRoute: Splash.routeName,
     );
   }
 }

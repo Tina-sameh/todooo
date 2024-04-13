@@ -21,6 +21,19 @@
 "invalidPass" :"Please enter a valid password",
 "emptyEmail" :"Empty email are not allowed",
 "invalidUser" :"please enter a valid username",
+
+"newTask":"Add New Task",
+"validTitle":"Please enter vaild title",
+"validDescription" :"Please enter vaild Description",
+"selectDate":"Select date",
+"add":"add",
+"title":"Title",
+"description":"Description",
 "lang": "Language",
-"dark": "Dark Mode"
+"dark": "Dark Mode",
+"done": "Done",
+"editTask": "Edit Task",
+"edit": "Edit",
+"delete": "Delete",
+"save": "Save Changes"
 }

@@ -30,21 +30,24 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    listProvider=Provider.of(context);
-    ThemeProvider themeProvider=Provider.of(context);
+    listProvider = Provider.of(context);
+    ThemeProvider themeProvider = Provider.of(context);
     return Scaffold(
       appBar: AppBar(
-        title:  Text(
-         " ${AppLocalizations.of(context)!.welcome}, ${MyUser.currentUser!.username}",
-          style: themeProvider.appBarTextStyle
-        ),
+        title: Text(
+            " ${AppLocalizations.of(context)!.welcome}, ${MyUser.currentUser!.username}",
+            style: themeProvider.appBarTextStyle),
         actions: [
           InkWell(
-              onTap: (){
-                listProvider.clearData();
-                Navigator.pushReplacementNamed(context, Login.routeName);
-              },
-              child: Icon(Icons.logout,color: Colors.white,),)
+            onTap: () {
+              listProvider.clearData();
+              Navigator.pushReplacementNamed(context, Login.routeName);
+            },
+            child: Icon(
+              Icons.logout,
+              color: Colors.white,
+            ),
+          )
         ],
       ),
       body: tabs[current],
@@ -56,12 +59,13 @@ class _HomeState extends State<Home> {
             Icons.add,
             color: Colors.white,
           ),
-          shape: const StadiumBorder(
-              side: BorderSide(color: Colors.white, width: 3))),
+          shape:  StadiumBorder(
+              side: BorderSide(color: Theme.of(context).brightness== Brightness.light?AppColors.white :AppColors.lightBlack, width: 4))),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: buildBottomNavigationBar(),
-      backgroundColor:  Theme.of(context).brightness== Brightness.light?AppColors.accent :AppColors.primiaryDark,
-
+      backgroundColor: Theme.of(context).brightness == Brightness.light
+          ? AppColors.accent
+          : AppColors.primiaryDark,
     );
   }
 

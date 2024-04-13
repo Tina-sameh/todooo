@@ -23,7 +23,7 @@ class _RegisterState extends State<Register> {
 
   final TextEditingController emailController = TextEditingController();
 
-  final TextEditingController PasswordController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
 
   final TextEditingController rePasswordController = TextEditingController();
 
@@ -31,28 +31,34 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    ThemeProvider themeProvider= Provider.of(context);
+    ThemeProvider themeProvider = Provider.of(context);
     return Scaffold(
-      backgroundColor: const Color(0xffddead9),
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,color:Colors.black,),
-          onPressed: ()=>Navigator.of(context).pop(),
+          icon: const Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
         ),
         backgroundColor: const Color(0xff5c9bea),
-        title: Text(AppLocalizations.of(context)!.register,style: TextStyle(color:Colors.white)),
+        title: Text(AppLocalizations.of(context)!.register,
+            style: TextStyle(color: Colors.white)),
       ),
       body: Form(
         key: formKey,
         child: Padding(
-          padding: EdgeInsets.all(15),
+          padding: const EdgeInsets.all(15),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Spacer(),
+              const Spacer(),
               TextFormField(
+                style: themeProvider.textFormField,
                 controller: userNameController,
-                decoration: InputDecoration(labelText: AppLocalizations.of(context)!.user,labelStyle: themeProvider.textFormField),
+                decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.user,
+                    labelStyle: themeProvider.textFormField),
                 validator: (text) {
                   if (text == null || text.trim().isEmpty) {
                     return AppLocalizations.of(context)!.invalidUser;
@@ -62,24 +68,30 @@ class _RegisterState extends State<Register> {
                 },
               ),
               TextFormField(
+                style: themeProvider.textFormField,
                 controller: emailController,
-                decoration: InputDecoration(labelText:AppLocalizations.of(context)!.email,labelStyle: themeProvider.textFormField),
+                decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.email,
+                    labelStyle: themeProvider.textFormField),
                 validator: (text) {
                   if (text == null || text.trim().isEmpty) {
-                    return "Empty email are not allowed";
+                    return AppLocalizations.of(context)!.emptyEmail;
                   }
                   final bool emailValid = RegExp(
                           r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                       .hasMatch(text);
                   if (!emailValid) {
-                    return AppLocalizations.of(context)!.emailFormat ;
+                    return AppLocalizations.of(context)!.emailFormat;
                   }
                   return null;
                 },
               ),
               TextFormField(
-                controller: PasswordController,
-                decoration: InputDecoration(labelText: AppLocalizations.of(context)!.password,labelStyle: themeProvider.textFormField),
+                style: themeProvider.textFormField,
+                controller: passwordController,
+                decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.password,
+                    labelStyle: themeProvider.textFormField),
                 validator: (text) {
                   if (text == null || text.length < 6) {
                     return AppLocalizations.of(context)!.invalidPass;
@@ -88,19 +100,22 @@ class _RegisterState extends State<Register> {
                 },
               ),
               TextFormField(
+                style: themeProvider.textFormField,
                 controller: rePasswordController,
-                decoration: InputDecoration(labelText: AppLocalizations.of(context)!.repassword,labelStyle: themeProvider.textFormField),
+                decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.repassword,
+                    labelStyle: themeProvider.textFormField),
                 validator: (text) {
                   if (text == null || text.length < 6) {
-                    return AppLocalizations.of(context)!.emptyEmail ;
+                    return AppLocalizations.of(context)!.emptyEmail;
                   }
-                  if (text != PasswordController.text) {
-                    return AppLocalizations.of(context)!.match ;
+                  if (text != passwordController.text) {
+                    return AppLocalizations.of(context)!.match;
                   }
                   return null;
                 },
               ),
-              Spacer(
+              const Spacer(
                 flex: 3,
               ),
               ElevatedButton(
@@ -111,12 +126,13 @@ class _RegisterState extends State<Register> {
                   },
                   child: Row(
                     children: [
-                      Text(AppLocalizations.of(context)!.createAccount,style: TextStyle(color:Colors.white)),
-                      Spacer(),
-                      Icon(Icons.arrow_right)
+                      Text(AppLocalizations.of(context)!.createAccount,
+                          style: const TextStyle(color: Colors.white)),
+                      const Spacer(),
+                      const Icon(Icons.arrow_right)
                     ],
                   )),
-              Spacer(),
+              const Spacer(),
             ],
           ),
         ),
@@ -132,7 +148,7 @@ class _RegisterState extends State<Register> {
       //hide
       UserCredential authCreds = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
-              email: emailController.text, password: PasswordController.text);
+              email: emailController.text, password: passwordController.text);
       MyUser.currentUser = MyUser(
           id: authCreds.user!.uid,
           username: userNameController.text,
@@ -148,8 +164,7 @@ class _RegisterState extends State<Register> {
         DialogUtils.showError(context, AppLocalizations.of(context)!.weak);
       }
       if (e.code == 'email-already-in-use') {
-        DialogUtils.showError(
-            context, AppLocalizations.of(context)!.exit);
+        DialogUtils.showError(context, AppLocalizations.of(context)!.exit);
       } else {
         DialogUtils.showError(context, AppLocalizations.of(context)!.tryAgain);
       }

@@ -5,7 +5,7 @@ import 'package:todo/model/myUser.dart';
 import 'package:todo/model/todo_dm.dart';
 import 'package:todo/providers/list_provider.dart';
 import 'package:todo/providers/themeProvider.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../appColors.dart';
 
 class AddBottomSheet extends StatefulWidget {
@@ -35,7 +35,7 @@ color: Theme.of(context).brightness== Brightness.light?AppColors.white :AppColor
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
              Text(
-              "Add New Task",
+              AppLocalizations.of(context)!.newTask,
               style:themeProvider.buttomSheetTextTitle,
               textAlign: TextAlign.center,
             ),
@@ -43,13 +43,13 @@ color: Theme.of(context).brightness== Brightness.light?AppColors.white :AppColor
               style: themeProvider.smallTextStyle,
               validator: (text){
                 if(text?.isEmpty==true){
-      return "Please enter vaild title";
+      return AppLocalizations.of(context)!.validTitle;
                 }
                 return null;
               },
               controller: title,
               decoration:  InputDecoration(
-                labelText: "Title",
+                labelText: AppLocalizations.of(context)!.title,
                 labelStyle: themeProvider.textFormField
               ),
             ),
@@ -57,13 +57,13 @@ color: Theme.of(context).brightness== Brightness.light?AppColors.white :AppColor
       style: themeProvider.smallTextStyle,
               validator: (text){
                 if(text?.isEmpty==true){
-                  return "Please enter vaild Description";
+                  return AppLocalizations.of(context)!.validDescription;
                 }
                 return null;
               },
               controller: description,
               decoration:  InputDecoration(
-                labelText: "Description",
+                labelText: AppLocalizations.of(context)!.description,
                 labelStyle: themeProvider.textFormField
               ),
             ),
@@ -71,7 +71,7 @@ color: Theme.of(context).brightness== Brightness.light?AppColors.white :AppColor
               height: 10,
             ),
              Text(
-              "Select date",
+               AppLocalizations.of(context)!.selectDate,
               style: themeProvider.smallTextStyle,
               textAlign: TextAlign.start,
             ),
@@ -95,8 +95,8 @@ color: Theme.of(context).brightness== Brightness.light?AppColors.white :AppColor
                 onPressed: () {
                   addToDoFireBase();
                 },
-                child: const Text(
-                  "add",
+                child: Text(
+                  AppLocalizations.of(context)!.add,
                   style: TextStyle(fontSize: 20, color: Colors.white),
                 ))
           ],
@@ -106,14 +106,29 @@ color: Theme.of(context).brightness== Brightness.light?AppColors.white :AppColor
   }
 
   void buildShowMyDatePicker() async {
+    final ThemeData theme = Theme.of(context);
+
     selectedDate = (await showDatePicker(
-            context: context,
-            firstDate: DateTime.now(),
-            initialDate: selectedDate,
-            lastDate: DateTime.now().add(const Duration(days: 365)))) ??
+      context: context,
+      firstDate: DateTime.now(),
+      initialDate: selectedDate,
+      lastDate: DateTime.now().add(const Duration(days: 365)),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            colorScheme: ColorScheme.light(
+              primary: theme.colorScheme.primary,
+              onPrimary: theme.colorScheme.onPrimary,
+            ),
+          ),
+          child: child!,
+        );
+      },
+    )) ??
         selectedDate;
     setState(() {});
   }
+
 
   void addToDoFireBase() async{
     if(!formKey.currentState!.validate()){

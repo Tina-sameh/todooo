@@ -20,9 +20,9 @@ class ListProvider extends ChangeNotifier {
         .collection(MyUser.collectionName)
         .doc(MyUser.currentUser!.id)
         .collection(ToDo_dm.collectionName);
-    QuerySnapshot querySnapShot = await todoCollection.orderBy("Date",descending:true).get();
+    QuerySnapshot querySnapShot =
+        await todoCollection.orderBy("Date", descending: true).get();
     List<QueryDocumentSnapshot<Object?>> docList = querySnapShot.docs;
-
     for (QueryDocumentSnapshot doc in docList) {
       Map json = doc.data() as Map;
       Timestamp dateToTimeStamp = json["Date"];
